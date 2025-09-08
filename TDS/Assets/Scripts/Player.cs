@@ -5,7 +5,9 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
     Vector2 moveInput;
-    [SerializeField] float moveSpeed = 3;
+    [SerializeField] float moveSpeed = 3f;
+    [SerializeField] float bulletSpeed = 7f;
+    [SerializeField] GameObject bullet;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,6 +19,13 @@ public class Player : MonoBehaviour
     {
         moveInput = value.Get<Vector2>();
     }
+
+
+    void OnAttack()
+    {
+        Instantiate(bullet, transform.position, Quaternion.identity);
+    }
+
 
     // Update is called once per frame
     void Update()
