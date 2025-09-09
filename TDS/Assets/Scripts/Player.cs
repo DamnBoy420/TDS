@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
 
     void OnAttack()
     {
-        Instantiate(bullet, transform.position, Quaternion.identity);
+        Rigidbody2D playerBullet =  Instantiate(bullet, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
+        playerBullet.AddForce(transform.up * bulletSpeed, ForceMode2D.Impulse);
     }
 
 
