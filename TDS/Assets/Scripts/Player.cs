@@ -5,18 +5,24 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
     Vector2 moveInput;
+    Vector2 screenBoundery;
+
+    [SerializeField] int playerHealth = 5;
+    [SerializeField] float invinsibleTime = 3f;
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] float rotationSpeed = 700f;
     [SerializeField] float bulletSpeed = 7f;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject gun;
 
+    bool invinsible;
     float targetAngle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        screenBoundery = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
     }
 
     private void OnMove(InputValue value)
@@ -40,6 +46,9 @@ public class Player : MonoBehaviour
         {
             targetAngle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
         }
+
+        transform.position = new Vector2(Mathf.Clamp(transform.position.x, -screenBoundery.x, screenBoundery.x)
+                                        ,Mathf.Clamp(transform.position.y, -screenBoundery.y, screenBoundery.y));
     }
     void FixedUpdate()
     {
@@ -47,8 +56,26 @@ public class Player : MonoBehaviour
         rb.MoveRotation(rotation);
     }
 
+    void ResetInvinsibility()
+    {
+        invinsible = false;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        if (collision.gameObject.CompareTag("Enemies") && !invinsible)
+        {
+            if(playerHealth <= 1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                playerHealth--;
+                invinsible = true;
+                Invoke("ResetInvinsibility", invinsibleTime);
+                Debug.Log("Player health:" + playerHealth);
+            }
+        }
     }
 }
