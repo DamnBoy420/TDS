@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114cc96408c35b140ad7357eddee47b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  healthPackPrefab: {fileID: 0}
+  healthPackPrefab: {fileID: 1877435956713659995, guid: 3cf2272f0e962304eb9136478ef6b567, type: 3}
   minSpawnTime: 10
   maxSpawnTime: 15
 --- !u!1 &519420028

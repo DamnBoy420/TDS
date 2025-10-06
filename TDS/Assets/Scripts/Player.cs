@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     Vector2 screenBoundery;
 
     [SerializeField] int playerHealth = 5;
+    [SerializeField] int addPlayerHealth = 1;
     [SerializeField] float invinsibleTime = 3f;
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] float rotationSpeed = 700f;
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject gun;
 
-    bool invinsible;
+    bool isInvinsible;
     float targetAngle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,24 +59,33 @@ public class Player : MonoBehaviour
 
     void ResetInvinsibility()
     {
-        invinsible = false;
+        isInvinsible = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemies") && !invinsible)
+        if (collision.gameObject.CompareTag("Enemies") && !isInvinsible)
         {
-            if(playerHealth <= 1)
+            if (playerHealth <= 1)
             {
                 Destroy(gameObject);
             }
             else
             {
                 playerHealth--;
-                invinsible = true;
+                isInvinsible = true;
                 Invoke("ResetInvinsibility", invinsibleTime);
                 Debug.Log("Player health:" + playerHealth);
             }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("HealthPack"))
+        {
+            playerHealth += addPlayerHealth;
+            Debug.Log("Player health:" + playerHealth);
+            Destroy(collision.gameObject);
         }
     }
 }
